@@ -26,7 +26,7 @@ CREATE OR REPLACE TABLE Instructors (
 -- Grades table
 CREATE OR REPLACE TABLE Grades (
     gradeID INT AUTO_INCREMENT NOT NULL UNIQUE,
-    letterGrade VARCHAR(3) NOT NULL,
+    gradeName VARCHAR(3) NOT NULL,
     gradePoint FLOAT NOT NULL,
     PRIMARY KEY (gradeID)
 );
@@ -80,7 +80,7 @@ VALUES (1, 'David', 'Miller', 'david.miller@example.com'),
 (2, 'Emma', 'Brown', 'emma.brown@example.com'),
 (3, 'Frank', 'Wilson', 'frank.wilson@example.com');
 
-INSERT INTO Grades (gradeID, letterGrade, gradePoint)
+INSERT INTO Grades (gradeID, gradeName, gradePoint)
 VALUES (1, 'A', 4),
 (2, 'B', 3),
 (3, 'C', 2),
