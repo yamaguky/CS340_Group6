@@ -1,0 +1,91 @@
+{{!-- Citation for the following:
+Date: 05/06/2025
+Based on:
+Source: Exploration - Web Application Technology
+Authors: Professor Michael Curry
+Section: Web App Design UI
+Subsection: Building our webpage with Handlebars Templating Engine --}}
+
+<h1>Students</h1>
+
+{{! READ table }}
+<table>
+    <thead>
+        {{! For the table header row, we print the DB attribute names }}
+        <tr>
+            {{#each student.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{! For each row, print the id, fname, lname, homeworld and age }}
+        {{#each student}}
+        <tr>
+            <td>{{this.studentID}}</td>
+            <td>{{this.firstName}}</td>
+            <td>{{this.lastName}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.major}}</td>
+
+            {{! DELETE form }}
+            <form id='delete_student_form'>
+                <input type='hidden' name='delete_student_id' value='{{this.studentID}}' />
+                <input type='hidden' name='delete_student_name' value='{{this.firstName}} {{this.lastName}}' />
+                <td>
+                    <button type='submit'>
+                        Delete
+                    </button>
+                </td>
+            </form>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{! CREATE form }}
+<h2>Create a Student</h2>
+<form class='cuForm' id='create_student_form'>
+    <label for='create_student_firstName'>First Name: </label>
+    <input type='text' name='create_student_firstName' id='create_student_firstName' required />
+
+    <label for='create_student_lastName'>Last Name: </label>
+    <input type='text' name='create_student_lastName' id='create_student_lastName' />
+
+    <label for='create_student_email'>Email: </label>
+    <input type='text' name='create_student_email' id='create_student_email' />
+
+    <label for='create_student_major'>Major:</label>
+    <input type='text' name='create_student_major' id='create_student_email' />
+
+    <input type='submit' />
+</form>
+
+{{! UPDATE form }}
+<h2>Update a Student</h2>
+<form class='cuForm' id='update_student_form'>
+    <label for='update_student_id'>Student to Update: </label>
+    <select name='update_student_id' id='update_student_id' required>
+        <option value='' disabled selected>Select a Student</option>
+        {{#each student}}
+        <option value='{{this.id}}' required>
+            {{this.studentID}}
+            -
+            {{this.firstName}}
+            {{this.lastName}}
+        </option>
+        {{/each}}
+    </select>
+
+    <label for='update_student_email'>Email: </label>
+    <input type='text' name='update_student_email' id='update_student_email' />
+
+    <label for='update_student_major'>Major: </label>
+    <input type='text' name='update_student_major' id='update_student_major' />
+
+    <input type='submit' />
+</form>
