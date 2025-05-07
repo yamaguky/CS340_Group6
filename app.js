@@ -44,16 +44,12 @@ app.get('/Students', async function (req, res) {
     try {
         // Create and execute our queries
         // In query1, we use a JOIN clause to display the names of the homeworlds
-        const query1 = `SELECT Students.studentId, Students.firstName, Students.lastName, \
-            Students.email, Students.major \
-            LEFT JOIN bsg_planets ON bsg_people.homeworld = bsg_planets.id;`;
-        const query2 = 'SELECT * FROM bsg_planets;';
-        const [people] = await db.query(query1);
-        const [homeworlds] = await db.query(query2);
+        const query1 = `SELECT Students.studentId, Students.firstName, Students.lastName, Students.email, Students.major`;
+        const [students] = await db.query(query1);
 
         // Render the bsg-people.hbs file, and also send the renderer
         //  an object that contains our bsg_people and bsg_homeworld information
-        res.render('Students', { people: people, homeworlds: homeworlds });
+        res.render('Students', { students: students });
     } catch (error) {
         console.error('Error executing queries:', error);
         // Send a generic error message to the browser
