@@ -1,0 +1,84 @@
+<!-- Citation for the following:
+Date: 05/07/2025
+Based on:
+Source: Exploration – Web Application Technology
+Authors: Professor Michael Curry
+Section: Web App Design UI
+Subsection: Building our webpage with Handlebars Templating Engine -->
+
+<h1>Courses</h1>
+
+{{!-- READ table --}}
+<table>
+  <thead>
+    <tr>
+      {{#each courses.[0]}}
+        <th>{{@key}}</th>
+      {{/each}}
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {{#each courses}}
+      <tr>
+        <td>{{courseID}}</td>
+        <td>{{courseName}}</td>
+        <td>{{courseCode}}</td>
+        <td>{{credit}}</td>
+        <td>{{instructor}}</td>
+        <td>
+          <form action="/Courses/delete" method="post" style="display:inline;">
+            <input type="hidden" name="courseID" value="{{courseID}}" />
+            <button>Delete</button>
+          </form>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<h2>Create a Course</h2>
+<form id="create_course_form" action="/Courses" method="post">
+  <label>Name:
+    <input name="courseName" required />
+  </label>
+  <label>Code:
+    <input name="courseCode" required />
+  </label>
+  <label>Credit:
+    <input name="credit" type="number" min="0" required />
+  </label>
+  <label>Instructor:
+    <select name="instructorID" required>
+      <option value="" disabled selected>Select an Instructor</option>
+      {{#each instructors}}
+        <option value="{{instructorID}}">{{firstName}} {{lastName}}</option>
+      {{/each}}
+    </select>
+  </label>
+  <button>Add</button>
+</form>
+
+<h2>Update Course Instructor</h2>
+<form id="update_course_form" action="/Courses/update" method="post">
+  <label>Course:
+    <select name="courseID" required>
+      <option value="" disabled selected>Select a Course</option>
+      {{#each courses}}
+        <option value="{{courseID}}">{{courseID}} - {{courseName}}</option>
+      {{/each}}
+    </select>
+  </label>
+  <label>New Instructor:
+    <select name="instructorID" required>
+      <option value="" disabled selected>Select an Instructor</option>
+      {{#each instructors}}
+        <option value="{{instructorID}}">{{firstName}} {{lastName}}</option>
+      {{/each}}
+    </select>
+  </label>
+  <button>Update</button>
+</form>
+
+<p><a href="/">Home</a></p>

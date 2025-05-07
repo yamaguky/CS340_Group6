@@ -1,0 +1,71 @@
+<!-- Citation for the following:
+Date: 05/07/2025
+Based on:
+Source: Exploration – Web Application Technology
+Authors: Professor Michael Curry
+Section: Web App Design UI
+Subsection: Building our webpage with Handlebars Templating Engine -->
+
+<h1>Instructors</h1>
+
+{{!-- READ table --}}
+<table>
+  <thead>
+    <tr>
+      {{#each instructors.[0]}}
+        <th>{{@key}}</th>
+      {{/each}}
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {{#each instructors}}
+      <tr>
+        <td>{{instructorID}}</td>
+        <td>{{firstName}}</td>
+        <td>{{lastName}}</td>
+        <td>{{email}}</td>
+
+        <td>
+          <form action="/Instructors/delete" method="post" style="display:inline;">
+            <input type="hidden" name="instructorID" value="{{instructorID}}" />
+            <button>Delete</button>
+          </form>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<h2>Create an Instructor</h2>
+<form id="create_instructor_form" action="/Instructors" method="post">
+  <label>First Name:
+    <input name="firstName" required />
+  </label>
+  <label>Last Name:
+    <input name="lastName" required />
+  </label>
+  <label>Email:
+    <input name="email" required />
+  </label>
+  <button>Add</button>
+</form>
+
+<h2>Update Instructor Email</h2>
+<form id="update_instructor_form" action="/Instructors/update" method="post">
+  <label>Instructor to Update:
+    <select name="instructorID" required>
+      <option value="" disabled selected>Select an Instructor</option>
+      {{#each instructors}}
+        <option value="{{instructorID}}">{{instructorID}} - {{firstName}} {{lastName}}</option>
+      {{/each}}
+    </select>
+  </label>
+  <label>New Email:
+    <input name="email" required />
+  </label>
+  <button>Update</button>
+</form>
+
+<p><a href="/">Home</a></p>

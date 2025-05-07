@@ -1,0 +1,71 @@
+<h1>Students</h1>
+
+<table>
+  <thead>
+    <tr>
+      {{#each students.[0]}}
+        <th>{{@key}}</th>
+      {{/each}}
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {{#each students}}
+      <tr>
+        <td>{{studentID}}</td>
+        <td>{{firstName}}</td>
+        <td>{{lastName}}</td>
+        <td>{{email}}</td>
+        <td>{{major}}</td>
+
+        <td>
+          <form id="delete_student_form" action="/Students/delete" method="post">
+            <input type="hidden" name="studentID" value="{{studentID}}">
+            <button>Delete</button>
+          </form>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<h2>Create a Student</h2>
+<form id="create_student_form" action="/Students" method="post">
+  <label>First Name:
+    <input name="firstName" required>
+  </label>
+  <label>Last Name:
+    <input name="lastName" required>
+  </label>
+  <label>Email:
+    <input name="email" required>
+  </label>
+  <label>Major:
+    <input name="major">
+  </label>
+  <button>Add</button>
+</form>
+
+<h2>Update a Student</h2>
+<form id="update_student_form" action="/Students/update" method="post">
+  <label>Student to Update:
+    <select name="studentID" required>
+      <option value="" disabled selected>Select a Student</option>
+      {{#each students}}
+        <option value="{{studentID}}">
+          {{studentID}} - {{firstName}} {{lastName}}
+        </option>
+      {{/each}}
+    </select>
+  </label>
+  <label>New Email:
+    <input name="email">
+  </label>
+  <label>New Major:
+    <input name="major">
+  </label>
+  <button>Update</button>
+</form>
+
+<p><a href="/">Home</a></p>
