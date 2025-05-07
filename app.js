@@ -44,12 +44,12 @@ app.get('/Students', async function (req, res) {
     try {
         // Create and execute our queries
         // In query1, we use a JOIN clause to display the names of the homeworlds
-        const query1 = `SELECT Students.studentId, Students.firstName, Students.lastName, Students.email, Students.major`;
+        const query1 = `SELECT Students.studentId, Students.firstName, Students.lastName, Students.email, Students.major FROM Students`;
         const [students] = await db.query(query1);
 
         // Render the bsg-people.hbs file, and also send the renderer
         //  an object that contains our bsg_people and bsg_homeworld information
-        res.render('Students', { students: students });
+        res.render('students', { students: students });
     } catch (error) {
         console.error('Error executing queries:', error);
         // Send a generic error message to the browser
@@ -65,7 +65,7 @@ app.get('/Students', async function (req, res) {
 app.listen(PORT, function () {
     console.log(
         'Express started on http://localhost:' +
-            PORT +
-            '; press Ctrl-C to terminate.'
+        PORT +
+        '; press Ctrl-C to terminate.'
     );
 });
