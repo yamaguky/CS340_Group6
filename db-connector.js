@@ -1,3 +1,11 @@
+// Citation for the following:
+// Date: 05/06/2025
+// Based on:
+// Source: Exploration - Web Application Technology
+// Authors: Professor Michael Curry
+// Section: Web App Design UI
+// Subsection: Build db-connector.js
+
 // Get an instance of mysql we can use in the app
 let mysql = require('mysql2')
 
