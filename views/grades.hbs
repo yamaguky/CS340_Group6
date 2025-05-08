@@ -1,0 +1,66 @@
+<!-- Citation for the following:
+Date: 05/07/2025
+Based on:
+Source: Exploration – Web Application Technology
+Authors: Professor Michael Curry
+Section: Web App Design UI
+Subsection: Building our webpage with Handlebars Templating Engine -->
+
+<h1>Grades</h1>
+
+<table>
+    <thead>
+        <tr>
+            {{#each grades.[0]}}
+            <th>{{@key}}</th>
+            {{/each}}
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#each grades}}
+        <tr>
+            <td>{{gradeID}}</td>
+            <td>{{gradeName}}</td>
+            <td>{{gradePoint}}</td>
+
+            <td>
+                <form id="delete_grade_form" action="/Grades/delete" method="post">
+                    <input type="hidden" name="gradeID" value="{{gradeID}}">
+                    <button>Delete</button>
+                </form>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<h2>Create a Grade</h2>
+<form id="create_grade_form" action="/Grades" method="post">
+    <label>Grade Name:
+        <input name="gradeName" required>
+    </label>
+    <label>Grade Point:
+        <input name="gradePoint" required>
+    </label>
+    <button>Add</button>
+</form>
+
+<h2>Update a Grade</h2>
+<form id="update_grade_form" action="/Grades/update" method="post">
+    <label>Grade to Update:
+        <select name="gradeID" required>
+            <option value="" disabled selected>Select a Grade</option>
+            {{#each grades}}
+            <option value="{{gradeID}}">
+                {{gradeID}} - {{gradeName}}
+            </option>
+            {{/each}}
+        </select>
+    </label>
+    <label>New Grade Point:
+        <input name="gradePoint">
+    </label>
+    <button>Update</button>
+</form>

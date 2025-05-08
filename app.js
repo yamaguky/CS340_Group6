@@ -99,6 +99,38 @@ app.get('/Courses', async function (req, res) {
     }
 });
 
+app.get('/Grades', async function (req, res) {
+    try {
+        // Create and execute our queries   
+        const [grades] = await db.query(
+            'SELECT gradeID, gradeName, gradePoint FROM Grades'
+          );
+          res.render('grades', { grades });
+    } catch (error) {
+        console.error('Error executing queries:', error);
+        // Send a generic error message to the browser
+        res.status(500).send(
+            'An error occurred while executing the database queries.'
+        );
+    }
+});
+
+
+app.get('/Students_Courses', async function (req, res) {
+    try {
+        // Create and execute our queries   
+        const [students_courses] = await db.query(
+            'SELECT enrollmentID, studentID, courseID, gradeID FROM Students_Courses'
+        );
+        res.render('students_courses', { students_courses });
+    } catch (error) {
+        console.error('Error executing queries:', error);
+        // Send a generic error message to the browser
+        res.status(500).send(
+            'An error occurred while executing the database queries.'
+        );
+    }
+});
 
 
 // ########################################
