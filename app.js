@@ -120,11 +120,9 @@ app.get('/Students_Courses', async function (req, res) {
     try {
         // Create and execute our queries   
         const [students_courses] = await db.query(
-            `SELECT SC.enrollmentID, SC.studentID, SC.courseID, SC.gradeID,
-              FROM Students_Courses SC
-              JOIN Students S ON S.studentID = SC.studentID`
-          );
-          res.render('students_courses', { students_courses });
+            'SELECT enrollmentID, studentID, courseID, gradeID FROM Students_Courses'
+        );
+        res.render('students_courses', { students_courses });
     } catch (error) {
         console.error('Error executing queries:', error);
         // Send a generic error message to the browser
