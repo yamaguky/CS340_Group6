@@ -1,0 +1,70 @@
+<!-- Citation for the following:
+Date: 05/07/2025
+Based on:
+Source: Exploration – Web Application Technology
+Authors: Professor Michael Curry
+Section: Web App Design UI
+Subsection: Building our webpage with Handlebars Templating Engine -->
+
+<h1>Students Courses</h1>
+
+{{!-- READ table --}}
+<table>
+  <thead>
+    <tr>
+      {{#each students_courses.[0]}}
+        <th>{{@key}}</th>
+      {{/each}}
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {{#each students_courses}}
+      <tr>
+        <td>{{enrollmentID}}</td>
+        <td>{{studentID}}</td>
+        <td>{{courseID}}</td>
+        <td>{{gradeID}}</td>
+        <td>
+          <form action="/Students_Courses/delete" method="post" style="display:inline;">
+            <input type="hidden" name="enrollmentID" value="{{enrollmentID}}" />
+            <button>Delete</button>
+          </form>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<h2>Create a Student Course</h2>
+<form id="create_student_course_form" action="/Students_Courses" method="post">
+  <label>Enrollment ID:
+    <input name="enrollmentID" type="number" min="0" required />
+  </label>
+  <label>Student ID:
+    <input name="studentID" type="number" min="0" required />
+  </label>
+  <label>Course ID:
+    <input name="courseID" type="number" min="0" required />
+  </label>
+  <label>Grade ID:
+    <input name="gradeID" type="number" min="0" required />
+  </label>
+  <button>Add</button>
+</form>
+
+<h2>Update Student Course</h2>
+<form id="update_student_course_form" action="/Students_Courses/update" method="post">
+  <label>Course:
+    <select name="enrollmentID" required>
+      <option value="" disabled selected>Select a Student Course</option>
+      {{#each students_courses}}
+        <option value="{{enrollmenID}}">{{enrollmentID}} - {{studentID}}</option>
+      {{/each}}
+    </select>
+  </label>
+  <button>Update</button>
+</form>
+
+<p><a href="/">Home</a></p>
