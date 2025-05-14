@@ -1,108 +1,118 @@
--- -- Group 6: Thomas Murray, Kyohei Yamaguchi
-
-
--- ======================================
 -- STUDENTS
--- ======================================
 
--- SELECT all students
-SELECT studentID, firstName, lastName, email, major FROM Students;
+-- SELECT
+SELECT studentID, firstName, lastName, email, major
+FROM Students;
 
--- INSERT a new student
+-- INSERT
 INSERT INTO Students (firstName, lastName, email, major)
-VALUES (@firstNameInput, @lastNameInput, @emailInput, @majorInput);
+VALUES (@firstName, @lastName, @studentEmail, @major);
 
--- UPDATE student's email and/or major
+-- UPDATE
 UPDATE Students
-SET email = @emailInput, major = @majorInput
-WHERE studentID = @studentID;
+SET email = @newEmail,
+    major = @newMajor
+WHERE studentID = (
+      SELECT studentID FROM Students WHERE email = @studentEmail
+);
 
--- DELETE a student
+-- DELETE
 DELETE FROM Students
-WHERE studentID = @studentID;
+WHERE studentID = (
+      SELECT studentID FROM Students WHERE email = @studentEmail
+);
 
--- ======================================
 -- INSTRUCTORS
--- ======================================
 
--- SELECT all instructors
-SELECT instructorID, firstName, lastName, email FROM Instructors;
+SELECT instructorID, firstName, lastName, email
+FROM Instructors;
 
--- INSERT a new instructor
 INSERT INTO Instructors (firstName, lastName, email)
-VALUES (@firstNameInput, @lastNameInput, @emailInput);
+VALUES (@firstName, @lastName, @instructorEmail);
 
--- UPDATE an instructor
 UPDATE Instructors
-SET firstName = @firstNameInput, lastName = @lastNameInput, email = @emailInput
-WHERE instructorID = @instructorID;
+SET firstName = @newFirstName,
+    lastName  = @newLastName,
+    email     = @newEmail
+WHERE instructorID = (
+      SELECT instructorID FROM Instructors WHERE email = @instructorEmail
+);
 
--- DELETE an instructor
 DELETE FROM Instructors
-WHERE instructorID = @instructorID;
+WHERE instructorID = (
+      SELECT instructorID FROM Instructors WHERE email = @instructorEmail
+);
 
--- ======================================
 -- COURSES
--- ======================================
 
--- SELECT all courses with instructor names
+-- SELECT with instructor name
 SELECT C.courseID, C.courseName, C.courseCode, C.credit,
-       CONCAT(I.firstName,' ',I.lastName) AS instructor
+       CONCAT(I.firstName, ' ', I.lastName) AS instructor
 FROM Courses C
 JOIN Instructors I ON C.instructorID = I.instructorID;
 
--- INSERT a new course
+-- INSERT (lookup instructor by email)
 INSERT INTO Courses (courseName, courseCode, credit, instructorID)
-VALUES (@courseNameInput, @courseCodeInput, @creditInput, @instructorID);
+VALUES (@courseName, @courseCode, @credit,
+        (SELECT instructorID FROM Instructors WHERE email = @instructorEmail));
 
--- UPDATE a course
+-- UPDATE
 UPDATE Courses
-SET courseName = @courseNameInput,
-    courseCode = @courseCodeInput,
-    credit = @creditInput,
-    instructorID = @instructorID
-WHERE courseID = @courseID;
+SET courseName   = @newCourseName,
+    courseCode   = @newCourseCode,
+    credit       = @newCredit,
+    instructorID = (SELECT instructorID FROM Instructors WHERE email = @newInstructorEmail)
+WHERE courseID = (
+      SELECT courseID FROM Courses WHERE courseCode = @courseCode
+);
 
--- DELETE a course
+-- DELETE
 DELETE FROM Courses
-WHERE courseID = @courseID;
+WHERE courseID = (
+      SELECT courseID FROM Courses WHERE courseCode = @courseCode
+);
 
--- ======================================
 -- GRADES
--- ======================================
 
--- SELECT all grades
-SELECT gradeID, gradeName, gradePoint FROM Grades;
+SELECT gradeID, gradeName, gradePoint
+FROM Grades;
 
--- INSERT a new grade
 INSERT INTO Grades (gradeName, gradePoint)
-VALUES (@gradeNameInput, @gradePointInput);
+VALUES (@gradeName, @gradePoint);
 
--- UPDATE a grade
 UPDATE Grades
-SET gradeName = @gradeNameInput, gradePoint = @gradePointInput
-WHERE gradeID = @gradeID;
+SET gradePoint = @newGradePoint
+WHERE gradeID = (
+      SELECT gradeID FROM Grades WHERE gradeName = @gradeName
+);
 
--- DELETE a grade
 DELETE FROM Grades
-WHERE gradeID = @gradeID;
+WHERE gradeID = (
+      SELECT gradeID FROM Grades WHERE gradeName = @gradeName
+);
 
--- ======================================
--- STUDENTS_COURSES 
--- ======================================
+-- STUDENTS_COURSES
 
--- SELECT all student-course enrollments
-SELECT enrollmentID, studentID, courseID, gradeID FROM Students_Courses;
+-- SELECT
+SELECT enrollmentID,
+       studentID,
+       courseID,
+       gradeID
+FROM Students_Courses;
 
--- INSERT a student-course enrollment
+-- INSERT (fully dynamic)
 INSERT INTO Students_Courses (studentID, courseID, gradeID)
-VALUES (@studentID, @courseID, @gradeID);
+VALUES (
+    (SELECT studentID  FROM Students  WHERE email      = @studentEmail),
+    (SELECT courseID   FROM Courses   WHERE courseCode = @courseCode),
+    (SELECT gradeID    FROM Grades    WHERE gradeName  = @gradeName )
+);
 
--- UPDATE an enrollment's grade
+-- UPDATE grade
 UPDATE Students_Courses
-SET gradeID = @gradeID
+SET gradeID = (SELECT gradeID FROM Grades WHERE gradeName = @newGradeName)
 WHERE enrollmentID = @enrollmentID;
 
--- DELETE an enrollment
+-- DELETE
 DELETE FROM Students_Courses
 WHERE enrollmentID = @enrollmentID;
