@@ -15,7 +15,6 @@ Subsection: Building our webpage with Handlebars Templating Engine -->
             {{#each students_courses.[0]}}
             <th>{{@key}}</th>
             {{/each}}
-            <th></th>
         </tr>
     </thead>
 
@@ -26,17 +25,20 @@ Subsection: Building our webpage with Handlebars Templating Engine -->
             <td>{{studentID}}</td>
             <td>{{courseID}}</td>
             <td>{{gradeID}}</td>
+            <!-- 
             <td>
                 <form action="/Students_Courses/delete" method="post" style="display:inline;">
                     <input type="hidden" name="enrollmentID" value="{{enrollmentID}}" />
                     <button>Delete</button>
                 </form>
             </td>
+            -->
         </tr>
         {{/each}}
     </tbody>
 </table>
 
+<!-- Comment out for now
 <h2>Create a Student Course</h2>
 <form id="create_student_course_form" action="/Students_Courses" method="post">
     <label>Enrollment ID:
@@ -90,3 +92,4 @@ Subsection: Building our webpage with Handlebars Templating Engine -->
     </label>
     <button>Update</button>
 </form>
+-->

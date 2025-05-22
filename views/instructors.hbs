@@ -28,15 +28,16 @@ Subsection: Building our webpage with Handlebars Templating Engine -->
         <td>{{email}}</td>
 
         <td>
-          <form action="/Instructors/delete" method="post" style="display:inline;">
-            <input type="hidden" name="instructorID" value="{{instructorID}}" />
-            <button>Delete</button>
-          </form>
+         <form action="/Instructors/delete-check" method="post" style="display:inline;">
+          <input type="hidden" name="instructorID" value="{{instructorID}}" />
+          <button>Delete</button>
+        </form>
         </td>
       </tr>
     {{/each}}
   </tbody>
 </table>
+
 
 <h2>Create an Instructor</h2>
 <form id="create_instructor_form" action="/Instructors" method="post">

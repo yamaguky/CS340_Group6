@@ -1,0 +1,10 @@
+<!-- reset.hbs -->
+<h1>Reset Project Database</h1>
+
+<p>Click the button below to reset all tables and insert sample data.</p>
+
+<form action="/reset-db" method="post">
+  <button type="submit" onclick="return confirm('Are you sure you want to reset the database?')">
+    RESET DATABASE
+  </button>
+</form>

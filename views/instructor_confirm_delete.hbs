@@ -1,0 +1,42 @@
+<!-- Citation for the following:
+Date: 05/21/2025
+Based on:
+Source: Exploration – Web Application Technology
+Authors: Professor Michael Curry
+Section: Web App Design UI
+Subsection: Building our webpage with Handlebars Templating Engine -->
+<!-- instructor_confirm_delete.hbs -->
+
+{{!-- views/instructor_confirm_delete.hbs --}}
+<h1>Instructor Delete Confirmation</h1>
+
+<p>Instructor ID {{instructorID}} is assigned to the following course(s):</p>
+
+<ul>
+  {{#each assignedCourses}}
+    <li>{{courseCode}} - {{courseName}}</li>
+  {{/each}}
+</ul>
+
+<p>What would you like to do?</p>
+
+<form action="/Instructors/delete-with-courses" method="post">
+  <input type="hidden" name="instructorID" value="{{instructorID}}" />
+  <button>Delete instructor and assigned courses</button>
+</form>
+
+<form action="/Instructors/reassign-courses" method="post">
+  <input type="hidden" name="instructorID" value="{{instructorID}}" />
+  <label>Select replacement instructor:
+    <select name="newInstructorID" required>
+      {{#each instructors}}
+        {{#unless (eq this.instructorID ../instructorID)}}
+          <option value="{{this.instructorID}}">
+            {{this.instructorID}} - {{this.firstName}} {{this.lastName}}
+          </option>
+        {{/unless}}
+      {{/each}}
+    </select>
+  </label>
+  <button>Reassign and Delete</button>
+</form>

@@ -14,7 +14,7 @@ Subsection: Building our webpage with Handlebars Templating Engine -->
             {{#each grades.[0]}}
             <th>{{@key}}</th>
             {{/each}}
-            <th></th>
+            
         </tr>
     </thead>
 
@@ -25,17 +25,22 @@ Subsection: Building our webpage with Handlebars Templating Engine -->
             <td>{{gradeName}}</td>
             <td>{{gradePoint}}</td>
 
+
+            <!-- 
             <td>
                 <form id="delete_grade_form" action="/Grades/delete" method="post">
                     <input type="hidden" name="gradeID" value="{{gradeID}}">
                     <button>Delete</button>
                 </form>
             </td>
+            -->
         </tr>
         {{/each}}
     </tbody>
 </table>
 
+
+<!-- Comment out for now
 <h2>Create a Grade</h2>
 <form id="create_grade_form" action="/Grades" method="post">
     <label>Grade Name:
@@ -64,3 +69,4 @@ Subsection: Building our webpage with Handlebars Templating Engine -->
     </label>
     <button>Update</button>
 </form>
+-->
