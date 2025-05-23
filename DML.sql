@@ -1,118 +1,49 @@
--- STUDENTS
+-- DML: CS340 Project - DML matching Stored Procedures
+-- Group 6: Thomas Murray, Kyohei Yamaguchi
 
--- SELECT
-SELECT studentID, firstName, lastName, email, major
-FROM Students;
+-- SELECT all students
+SELECT studentID, firstName, lastName, email, major FROM Students;
 
--- INSERT
-INSERT INTO Students (firstName, lastName, email, major)
-VALUES (@firstName, @lastName, @studentEmail, @major);
+-- INSERT a student using procedure
+CALL sp_createStudent('Alice', 'Johnson', 'alice.johnson@example.com', 'Computer Science');
 
--- UPDATE
-UPDATE Students
-SET email = @newEmail,
-    major = @newMajor
-WHERE studentID = (
-      SELECT studentID FROM Students WHERE email = @studentEmail
-);
+-- UPDATE a student's email and major
+CALL sp_updateStudent(1, 'alice.new@example.com', 'Data Science');
 
--- DELETE
-DELETE FROM Students
-WHERE studentID = (
-      SELECT studentID FROM Students WHERE email = @studentEmail
-);
+-- DELETE a student by ID
+CALL sp_deleteStudent(1);
 
--- INSTRUCTORS
 
-SELECT instructorID, firstName, lastName, email
-FROM Instructors;
+-- SELECT all instructors
+SELECT instructorID, firstName, lastName, email FROM Instructors;
 
-INSERT INTO Instructors (firstName, lastName, email)
-VALUES (@firstName, @lastName, @instructorEmail);
+-- INSERT an instructor
+CALL sp_createInstructor('David', 'Miller', 'david.miller@example.com');
 
-UPDATE Instructors
-SET firstName = @newFirstName,
-    lastName  = @newLastName,
-    email     = @newEmail
-WHERE instructorID = (
-      SELECT instructorID FROM Instructors WHERE email = @instructorEmail
-);
+-- UPDATE an instructor's name or email
+CALL sp_updateInstructor(1, 'Dave', NULL, 'dave.miller@example.com');
 
-DELETE FROM Instructors
-WHERE instructorID = (
-      SELECT instructorID FROM Instructors WHERE email = @instructorEmail
-);
+-- DELETE an instructor directly
+CALL sp_deleteInstructor(1);
 
--- COURSES
+-- DELETE instructor and dependent courses
+CALL sp_deleteInstructorWithCourses(2);
 
--- SELECT with instructor name
+-- Reassign courses before deleting instructor
+CALL sp_reassignCoursesAndDeleteInstructor(3, 1);
+
+
+-- SELECT all courses with instructor name
 SELECT C.courseID, C.courseName, C.courseCode, C.credit,
        CONCAT(I.firstName, ' ', I.lastName) AS instructor
 FROM Courses C
 JOIN Instructors I ON C.instructorID = I.instructorID;
 
--- INSERT (lookup instructor by email)
-INSERT INTO Courses (courseName, courseCode, credit, instructorID)
-VALUES (@courseName, @courseCode, @credit,
-        (SELECT instructorID FROM Instructors WHERE email = @instructorEmail));
+-- INSERT a course using procedure
+CALL sp_createCourse('Database Systems', 'CS340', 4, 1);
 
--- UPDATE
-UPDATE Courses
-SET courseName   = @newCourseName,
-    courseCode   = @newCourseCode,
-    credit       = @newCredit,
-    instructorID = (SELECT instructorID FROM Instructors WHERE email = @newInstructorEmail)
-WHERE courseID = (
-      SELECT courseID FROM Courses WHERE courseCode = @courseCode
-);
+-- UPDATE a course’s information
+CALL sp_updateCourse(1, 'Advanced DB Systems', NULL, NULL, NULL);
 
--- DELETE
-DELETE FROM Courses
-WHERE courseID = (
-      SELECT courseID FROM Courses WHERE courseCode = @courseCode
-);
-
--- GRADES
-
-SELECT gradeID, gradeName, gradePoint
-FROM Grades;
-
-INSERT INTO Grades (gradeName, gradePoint)
-VALUES (@gradeName, @gradePoint);
-
-UPDATE Grades
-SET gradePoint = @newGradePoint
-WHERE gradeID = (
-      SELECT gradeID FROM Grades WHERE gradeName = @gradeName
-);
-
-DELETE FROM Grades
-WHERE gradeID = (
-      SELECT gradeID FROM Grades WHERE gradeName = @gradeName
-);
-
--- STUDENTS_COURSES
-
--- SELECT
-SELECT enrollmentID,
-       studentID,
-       courseID,
-       gradeID
-FROM Students_Courses;
-
--- INSERT (fully dynamic)
-INSERT INTO Students_Courses (studentID, courseID, gradeID)
-VALUES (
-    (SELECT studentID  FROM Students  WHERE email      = @studentEmail),
-    (SELECT courseID   FROM Courses   WHERE courseCode = @courseCode),
-    (SELECT gradeID    FROM Grades    WHERE gradeName  = @gradeName )
-);
-
--- UPDATE grade
-UPDATE Students_Courses
-SET gradeID = (SELECT gradeID FROM Grades WHERE gradeName = @newGradeName)
-WHERE enrollmentID = @enrollmentID;
-
--- DELETE
-DELETE FROM Students_Courses
-WHERE enrollmentID = @enrollmentID;
+-- DELETE a course
+CALL sp_deleteCourse(1);

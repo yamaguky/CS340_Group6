@@ -1,7 +1,5 @@
--- =============================================================
 -- PL.SQL  – Stored Procedures for CS340 Project (Step 4 Draft)
 -- Group 6: Thomas Murray, Kyohei Yamaguchi
--- =============================================================
 -- This file defines:
 --   1) sp_reset_projectDB  – rebuilds schema & seed data
 --   2) deleteSampleStudent – simple DELETE demo for RESET check
@@ -14,7 +12,6 @@
 --   9) sp_createCourse     – create course
 --  10) sp_updateCourse     – update course
 --  11) sp_deleteCourse     – delete course
--- =============================================================
 
 DELIMITER //
 
